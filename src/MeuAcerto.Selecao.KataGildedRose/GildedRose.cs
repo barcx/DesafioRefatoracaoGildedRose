@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MeuAcerto.Selecao.KataGildedRose.Solucao;
 
 namespace MeuAcerto.Selecao.KataGildedRose
 {
@@ -12,77 +13,12 @@ namespace MeuAcerto.Selecao.KataGildedRose
 
         public void AtualizarQualidade()
         {
-            for (var i = 0; i < Itens.Count; i++)
+            foreach (var item in Itens)
             {
-                if (Itens[i].Nome != "Queijo Brie Envelhecido" && Itens[i].Nome != "Ingressos para o concerto do Turisas")
-                {
-                    if (Itens[i].Qualidade > 0)
-                    {
-                        if (Itens[i].Nome != "Dente do Tarrasque")
-                        {
-                            Itens[i].Qualidade = Itens[i].Qualidade - 1;
-                        }
-                    }
-                }
-                else
-                {
-                    if (Itens[i].Qualidade < 50)
-                    {
-                        Itens[i].Qualidade = Itens[i].Qualidade + 1;
-
-                        if (Itens[i].Nome == "Ingressos para o concerto do Turisas")
-                        {
-                            if (Itens[i].PrazoParaVenda < 11)
-                            {
-                                if (Itens[i].Qualidade < 50)
-                                {
-                                    Itens[i].Qualidade = Itens[i].Qualidade + 1;
-                                }
-                            }
-
-                            if (Itens[i].PrazoParaVenda < 6)
-                            {
-                                if (Itens[i].Qualidade < 50)
-                                {
-                                    Itens[i].Qualidade = Itens[i].Qualidade + 1;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                if (Itens[i].Nome != "Dente do Tarrasque")
-                {
-                    Itens[i].PrazoParaVenda = Itens[i].PrazoParaVenda - 1;
-                }
-
-                if (Itens[i].PrazoParaVenda < 0)
-                {
-                    if (Itens[i].Nome != "Queijo Brie Envelhecido")
-                    {
-                        if (Itens[i].Nome != "Ingressos para o concerto do Turisas")
-                        {
-                            if (Itens[i].Qualidade > 0)
-                            {
-                                if (Itens[i].Nome != "Dente do Tarrasque")
-                                {
-                                    Itens[i].Qualidade = Itens[i].Qualidade - 1;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            Itens[i].Qualidade = Itens[i].Qualidade - Itens[i].Qualidade;
-                        }
-                    }
-                    else
-                    {
-                        if (Itens[i].Qualidade < 50)
-                        {
-                            Itens[i].Qualidade = Itens[i].Qualidade + 1;
-                        }
-                    }
-                }
+                var itemParaAtualizar = new ContextoStrategy(item.Nome, item.PrazoParaVenda, item.Qualidade);
+                var result = itemParaAtualizar.Atualizar();
+                item.PrazoParaVenda = result.prazoParaVenda;
+                item.Qualidade = result.qualidade;
             }
         }
     }
